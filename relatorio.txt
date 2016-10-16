@@ -1,0 +1,18 @@
+Língua Natural - Relatório do Mini-Projeto Nº 1
+70577 - João Godinho
+70643 - João Ferreira
+
+Passo 1
+O tratamento da palavra inicia-se com três ramos que destacam os casos em que a palavra começa com um "e", uma das outras vogais, ou uma consoante. Caso a palavra tenha um "e" como primeira letra, existem transições para o tratamento do "x", diferenciadas pela letra que se segue (devolve "s" caso seja uma consoante, "z" caso seja uma vogal). Estas transições são apenas alcançáveis caso o "e" surja como primeira letra da palavra.
+Para o tratamento do "s" entre vogais, existem dois estados essenciais (3 e 4). Um deles é atingido aquando da leitura de uma vogal, enquanto o outro é atingido caso seja lida uma consoante. Sempre que seja lido um "s" no primeiro estado referido, ocorre uma diferenciação semelhante à feita no caso do "x": a leitura do "s" devolve "z" caso a letra seguinte seja uma vogal e "s" em caso contrário.
+
+Passo 2
+Foi criado um estado para cada uma das alterações introduzidas neste passo. Por exemplo, a alteração "ch -> x" é tratada num estado próprio (1) que, ao ler as letras "c" e "h" consecutivamente, não devolve output na leitura do "c" e devolve "x" na leitura do "h".
+O estado inicial pode, no entanto, ler qualquer letra e inutilizar as transições criadas para o tratamento dos casos pedidos no passo. O grupo resolveu introduzir um peso de 1.0 nesta leitura realizada em ciclo no próprio estado. Desta forma, sempre que um dos casos a tratar surja, o seu tratamento é efetuado no estado correto e sem qualquer custo associado, enquanto a opção indesejada é ignorada, visto que traria um peso associado.
+
+Passo 3
+Para tratar o caso do "r" no início da palavra, foram criadas duas transições a partir do estado inicial: uma que substitui o "r" por "4" e outra que lê e devolve "eps" mas que possui um peso de 1.0. Este mecanismo foi criado para que qualquer "r" no início da palavra seja sempre tratado pela primeira transição referida, enquanto as restantes palavras apenas começam a ser tratadas no estado central (2). 
+Realizado este passo, é atingido um estado central (2) por onde passam todas as outras operações realizadas. São aqui tratadas as leituras de "h" e "q" e, através de dois estados auxiliares (3 e 4), são também tratadas as alterações referentes às letras "c" e "g". Finalmente, foram criados dois estados (5 e 6) para o tratamento dos casos em que a palavra termina com "z" ou "x". De forma a garantir que este tratamento é corretamente efetuado, foram adicionados pesos às transições cíclicas no estado central. Assim, sempre que a palavra acabe com "z" ou "x", o caminho com menor peso será o que passa pelos estados criados para este propósito.
+
+Passo 4
+Com apenas dois estados, o primeiro estado possui uma transição para o segundo que lê e devolve o primeiro símbolo da palavra. Feita esta leitura, o segundo e último estado lê consecutivamente todos os símbolos restantes, desprezando o output em caso de vogal.
